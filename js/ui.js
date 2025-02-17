@@ -32,11 +32,11 @@ const ui = {
         pensamentosParaRenderizar.forEach(ui.adicionarPensamentoNaLista)
       }
     }
-    
+
     catch {
-    alert('Erro ao renderizar pensamentos')
-  }
-},
+      alert('Erro ao renderizar pensamentos')
+    }
+  },
 
   adicionarPensamentoNaLista(pensamento) {
     const listaPensamentos = document.getElementById("lista-pensamentos")
@@ -82,8 +82,27 @@ const ui = {
     iconeExcluir.alt = "Excluir"
     botaoExcluir.appendChild(iconeExcluir)
 
+    const botaoFavorito = document.createElement("button")
+    botaoFavorito.classList.add("botao-favorito")
+    botaoFavorito.onclick = async () => {
+      try {
+        api.atualizarFavorito(pensamento.id, !pensamento.favorito)
+        ui.renderizarPensamentos()
+      } catch (error) {
+        alert("Erro ao atualizar pensamentos")
+      }
+    }
+
+    const iconeFavorito = document.createElement("img")
+    iconeFavorito.src = pensamento.favorito ?
+      "assets/imagens/icone-favorito.png" :
+      "assets/imagens/icone-favorito_outline.png"
+    iconeFavorito.alt = "Ícone de favorito"
+    botaoFavorito.appendChild(iconeFavorito)
+
     const icones = document.createElement("div")
     icones.classList.add("icones")
+    icones.appendChild(botaoFavorito)
     icones.appendChild(botaoEditar)
     icones.appendChild(botaoExcluir)
 
