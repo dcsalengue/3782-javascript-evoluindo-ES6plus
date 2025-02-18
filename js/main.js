@@ -1,14 +1,31 @@
 import ui from "./ui.js"
 import api from "./api.js"
 
-function removerEspacos(string){
+
+const pensamentosSet = new Set()
+
+async function adicionarChaveAoPensamento() {
+  try {
+    const pensamentos = await api.buscarPensamentos()
+    pensamentos.forEach(pensamento => {
+      const chavePensamento = 
+      `${pensamento.conteudo.trim().toLowerCase()}-${pensamento.autoria.trim().toLowerCase()}`
+      pensamentosSet.add(chavePensamento)
+    })
+  } catch (error) {
+    alert('Erro ao adicionar chave ao pensamento')
+  }
+}
+
+function removerEspacos(string) {
   return string.replaceAll(/\s+/g, '')
 }
 
-const regexConteudo = /^[A-Za-z\s]{10,}$/
+const regexConteudo = /^[A-Za-z]{10,}$/
 const regexAutoria = /^[A-Za-z]{3,15}$/
 
 function validarConteudo(conteudo) {
+  console.log(`${conteudo} ${regexConteudo.test(conteudo)}`)
   return regexConteudo.test(conteudo)
 }
 
@@ -17,6 +34,7 @@ function validarAutoria(autoria) {
 }
 document.addEventListener("DOMContentLoaded", () => {
   ui.renderizarPensamentos()
+  adicionarChaveAoPensamento()
 
   const formularioPensamento = document.getElementById("pensamento-form")
   const botaoCancelar = document.getElementById("botao-cancelar")
@@ -43,9 +61,9 @@ async function manipularSubmissaoFormulario(event) {
     return
   }
 
-  if(!validarAutoria(autoriaSemEspacos)){
+  if (!validarAutoria(autoriaSemEspacos)) {
     alert("É permitida a inclusão de letras e entre 3 e 15 caracteres sem espaços para a autoria")
-    return 
+    return
   }
 
   if (!validarData(data)) {
@@ -53,6 +71,13 @@ async function manipularSubmissaoFormulario(event) {
     return
   }
 
+  const chaveNovoPensamento =
+    `${conteudo.trim().toLowerCase()}-${autoria.trim().toLowerCase()}`
+
+  if (pensamentosSet.has(chaveNovoPensamento)) {
+    alert(`Esse pensamento já existe`)
+    return
+  }
   try {
     if (id) {
       await api.editarPensamento({ id, conteudo, autoria, data })
