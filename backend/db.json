@@ -44,7 +44,7 @@
     },
     {
       "id": "7e2a",
-      "favorito": false,
+      "favorito": true,
       "conteudo": "Que a força esteja com você!",
       "autoria": "Mestre Yoda",
       "data": "2025-02-16T12:06:07.111Z"
@@ -85,10 +85,10 @@
       "data": "2025-02-16T12:11:12.666Z"
     },
     {
-      "id": "121d",
-      "conteudo": "Teste formato data",
+      "id": "b16a",
+      "conteudo": "novo teste",
       "autoria": "dev",
-      "data": "2025-02-17"
+      "data": "2025-03-17T00:00:00.000Z"
     }
   ]
 }
